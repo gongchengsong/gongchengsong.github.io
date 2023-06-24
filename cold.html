@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue & Echarts</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts-wordcloud/dist/echarts-wordcloud.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="final.css">
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="left">
+            <div id="high-left">
+                <span style="color: #626c91; font-weight: 900;"> &nbsp&nbsp选择年份： </span>
+                <select v-model="selectedYear" @change="changeYear" id="year_select" style="color: #626c91; background: rgba(254, 248, 239, 1);
+                height: 60px;
+                width: 500px;
+                line-height: 40px;
+                border: 1px solid #9bc0dd;
+                -moz-border-radius: 2px;
+                -webkit-border-radius: 2px;
+                border-radius: 8px;
+                font-size: 20px;
+                text-align:center
+                ">
+                    <option v-for="year in years" :value="year">{{ year }}</option>
+                </select>
+            </div>
+            <div id="top-left">
+                <div ref="chart" style="width: 700px; height: 300px;"></div>
+            </div>
+            <div id="bottom-left">
+                <div ref="chart" style="width: 700px; height: 500px;"></div>
+            </div>
+        </div>
+
+        <div class="right">
+            <div id="top-right">
+                <div ref="chart" style="width: 1000px; height: 400px;"></div>
+            </div>
+            <div id="bottom-right">
+                <div ref="chart" style="width: 1000px; height: 400px; "></div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <script>
+        var EventBus = new Vue();
+        var year_select = new Vue({
+            el: '#year_select',
+            data: {
+                selectedYear: 2000,
+                years: [2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022]
+            },
+            mounted() {
+
+            },
+            methods: {
+                changeYear() {
+                    EventBus.$emit("yearChanged", this.selectedYear);
+                }
+            }
+        });
+        var chart_river = new Vue({
+            el: '#top-right',
+            data: {
+                option: {
+                    title: {
+                        text: '出版信息总览',
+                        textStyle: {
+                            color: '#626c91'
+                        }
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'line',
+                            lineStyle: {
+                                color: 'rgba(0,0,0,0.2)',
+                                width: 1,
+                                type: 'solid'
+                            },
+                        }
+                    },
+                    legend: {
+                        data: ["文学", "流行", "文化", "生活", "经管", "科技"]
+                    },
+                    singleAxis: {
+                        top: 50,
+                        bottom: 50,
+                        axisTick: {},
+                        axisLabel: {},
+                        type: 'time',
+                        axisPointer: {
+                            animation: true,
+                            label: {
+                                show: true,
+                                position: 'outside'
+                            },
+                        },
+                        splitLine: {
+                            show: true,
+                            lineStyle: {
+                                type: 'dashed',
+                                opacity: 0.2
+                            }
+                        }
+                    },
+                    series: [
+                        {
+                            color: [
+                                "#3fb1e3",
+                                "#6be6c1",
+                                "#626c91",
+                                "#a0a7e6",
+                                "#c4ebad",
+                                "#96dee8"
+                            ],
+                            type: 'themeRiver',
+                            emphasis: {
+                                itemStyle: {
+                                    shadowBlur: 20,
+                                    shadowColor: 'rgba(0, 0, 0, 0.8)'
+                                }
+                            },
+
+                            data: [
+                                ['2000', 225, '文学'],
+                                ['2001', 208, '文学'],
+                                ['2002', 216, '文学'],
+                                ['2003', 273, '文学'],
+                                ['2004', 340, '文学'],
+                                ['2005', 357, '文学'],
+                                ['2006', 472, '文学'],
+                                ['2007', 394, '文学'],
+                                ['2008', 326, '文学'],
+                                ['2009', 413, '文学'],
+                                ['2010', 442, '文学'],
+                                ['2011', 425, '文学'],
+                                ['2012', 457, '文学'],
+                                ['2013', 459, '文学'],
+                                ['2014', 402, '文学'],
+                                ['2015', 386, '文学'],
+                                ['2016', 420, '文学'],
+                                ['2017', 467, '文学'],
+                                ['2018', 510, '文学'],
+                                ['2019', 433, '文学'],
+                                ['2020', 441, '文学'],
+                                ['2021', 456, '文学'],
+                                ['2022', 574, '文学'],
+                                ['2000', 190, '流行'],
+                                ['2001', 240, '流行'],
+                                ['2002', 239, '流行'],
+                                ['2003', 266, '流行'],
+                                ['2004', 388, '流行'],
+                                ['2005', 481, '流行'],
+                                ['2006', 538, '流行'],
+                                ['2007', 665, '流行'],
+                                ['2008', 835, '流行'],
+                                ['2009', 713, '流行'],
+                                ['2010', 694, '流行'],
+                                ['2011', 778, '流行'],
+                                ['2012', 865, '流行'],
+                                ['2013', 803, '流行'],
+                                ['2014', 683, '流行'],
+                                ['2015', 587, '流行'],
+                                ['2016', 647, '流行'],
+                                ['2017', 744, '流行'],
+                                ['2018', 890, '流行'],
+                                ['2019', 743, '流行'],
+                                ['2020', 700, '流行'],
+                                ['2021', 705, '流行'],
+                                ['2022', 817, '流行'],
+                                ['2000', 228, '文化'],
+                                ['2001', 240, '文化'],
+                                ['2002', 283, '文化'],
+                                ['2003', 342, '文化'],
+                                ['2004', 406, '文化'],
+                                ['2005', 519, '文化'],
+                                ['2006', 524, '文化'],
+                                ['2007', 601, '文化'],
+                                ['2008', 581, '文化'],
+                                ['2009', 671, '文化'],
+                                ['2010', 737, '文化'],
+                                ['2011', 744, '文化'],
+                                ['2012', 727, '文化'],
+                                ['2013', 825, '文化'],
+                                ['2014', 853, '文化'],
+                                ['2015', 939, '文化'],
+                                ['2016', 994, '文化'],
+                                ['2017', 942, '文化'],
+                                ['2018', 1018, '文化'],
+                                ['2019', 1047, '文化'],
+                                ['2020', 1089, '文化'],
+                                ['2021', 1100, '文化'],
+                                ['2022', 1459, '文化'],
+                                ['2000', 77, '生活'],
+                                ['2001', 82, '生活'],
+                                ['2002', 132, '生活'],
+                                ['2003', 158, '生活'],
+                                ['2004', 245, '生活'],
+                                ['2005', 291, '生活'],
+                                ['2006', 344, '生活'],
+                                ['2007', 454, '生活'],
+                                ['2008', 474, '生活'],
+                                ['2009', 567, '生活'],
+                                ['2010', 740, '生活'],
+                                ['2011', 837, '生活'],
+                                ['2012', 763, '生活'],
+                                ['2013', 737, '生活'],
+                                ['2014', 635, '生活'],
+                                ['2015', 634, '生活'],
+                                ['2016', 649, '生活'],
+                                ['2017', 684, '生活'],
+                                ['2018', 704, '生活'],
+                                ['2019', 645, '生活'],
+                                ['2020', 666, '生活'],
+                                ['2021', 676, '生活'],
+                                ['2022', 866, '生活'],
+                                ['2000', 57, '经管'],
+                                ['2001', 68, '经管'],
+                                ['2002', 104, '经管'],
+                                ['2003', 155, '经管'],
+                                ['2004', 200, '经管'],
+                                ['2005', 208, '经管'],
+                                ['2006', 259, '经管'],
+                                ['2007', 319, '经管'],
+                                ['2008', 295, '经管'],
+                                ['2009', 354, '经管'],
+                                ['2010', 373, '经管'],
+                                ['2011', 350, '经管'],
+                                ['2012', 314, '经管'],
+                                ['2013', 328, '经管'],
+                                ['2014', 281, '经管'],
+                                ['2015', 304, '经管'],
+                                ['2016', 321, '经管'],
+                                ['2017', 370, '经管'],
+                                ['2018', 342, '经管'],
+                                ['2019', 316, '经管'],
+                                ['2020', 384, '经管'],
+                                ['2021', 344, '经管'],
+                                ['2022', 374, '经管'],
+                                ['2000', 47, '科技'],
+                                ['2001', 57, '科技'],
+                                ['2002', 102, '科技'],
+                                ['2003', 110, '科技'],
+                                ['2004', 177, '科技'],
+                                ['2005', 190, '科技'],
+                                ['2006', 297, '科技'],
+                                ['2007', 276, '科技'],
+                                ['2008', 282, '科技'],
+                                ['2009', 308, '科技'],
+                                ['2010', 325, '科技'],
+                                ['2011', 296, '科技'],
+                                ['2012', 306, '科技'],
+                                ['2013', 318, '科技'],
+                                ['2014', 311, '科技'],
+                                ['2015', 295, '科技'],
+                                ['2016', 313, '科技'],
+                                ['2017', 309, '科技'],
+                                ['2018', 294, '科技'],
+                                ['2019', 275, '科技'],
+                                ['2020', 285, '科技'],
+                                ['2021', 302, '科技'],
+                                ['2022', 346, '科技']
+                            ]
+                        }
+                    ],
+                }
+            },
+            mounted() {
+                const chart = this.$refs.chart;
+                const echartsInstance = echarts.init(chart);
+                echartsInstance.setOption(this.option);
+                echartsInstance.on('click', function (params) {
+                    console.log(params);
+                });
+            }
+
+        });
+        var chart_column = new Vue({
+            el: '#bottom-right',
+            data: {
+                data: {
+                    "public": [
+                        99,
+                        83,
+                        100,
+                        34,
+                        25,
+                        21
+                    ],
+                    "comment": [
+                        -32,
+                        -100,
+                        -10,
+                        -88,
+                        -3,
+                        -13
+                    ],
+                    "score": [
+                        7.52,
+                        6.562,
+                        7.047,
+                        6.887,
+                        5.46,
+                        5.606
+                    ]
+                }
+            },
+            mounted() {
+                EventBus.$on("yearChanged", (msg) => {
+                    const chart = this.$refs.chart;
+                    const echartsInstance = echarts.init(chart);
+                    fetch('column.json')
+                        .then(response => response.json())
+                        .then(data => {
+                            this.data.public = data[msg - 2000].public;
+                            this.data.score = data[msg - 2000].score;
+                            this.data.comment = data[msg - 2000].comment;
+
+
+                            // 计算最大值
+                            const maxPublic = Math.max(...this.data.public);
+                            const maxComment = Math.max(...this.data.comment);
+
+                            // 归一化处理
+                            this.data.public = this.data.public.map(value => Math.round(value / maxPublic * 100));
+                            this.data.comment = this.data.comment.map(value => -Math.round(value / maxComment * 100));
+
+
+                            var option = {
+                                title: {
+                                    text: '年度出版信息',
+                                    textStyle: {
+                                        color: '#626c91'
+                                    }
+                                },
+                                series: [
+                                    {
+                                        color: [
+                                            "#3fb1e3",
+                                            "#6be6c1",
+                                            "#626c91",
+                                            "#a0a7e6",
+                                            "#c4ebad",
+                                            "#96dee8"
+                                        ],
+                                        name: '出版数量',
+                                        type: 'bar',
+                                        stack: 'Total',
+                                        label: {
+                                            show: true
+                                        },
+                                        emphasis: {
+                                            focus: 'series'
+                                        },
+                                        data: this.data.public
+                                    },
+                                    {
+                                        color: [
+                                            "#6be6c1",
+                                            "#626c91",
+                                            "#a0a7e6",
+                                            "#c4ebad",
+                                            "#96dee8"
+                                        ],
+                                        name: '综合评分',
+                                        type: 'line',
+                                        stack: 'Total',
+                                        data: this.data.score
+                                    },
+                                    {
+                                        color: [
+                                            "#626c91",
+                                            "#a0a7e6",
+                                            "#c4ebad",
+                                            "#96dee8"
+                                        ],
+                                        name: '评论人数',
+                                        type: 'bar',
+                                        stack: 'Total',
+                                        label: {
+                                            show: true,
+
+                                        },
+                                        emphasis: {
+                                            focus: 'series'
+                                        },
+                                        data: this.data.comment
+                                    }
+                                ]
+                            };
+                            echartsInstance.setOption(option);
+                        })
+                        .catch(error => console.error(error))
+                });
+                const chart = this.$refs.chart;
+                const echartsInstance = echarts.init(chart);
+                const option = {
+                    title: {
+                        text: '年度出版信息',
+                        textStyle: {
+                            color: '#626c91'
+                        }
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+                    legend: {
+                        data: ['评论人数', '出版数量', '综合评分']
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    yAxis: [
+                        {
+                            type: 'value'
+                        }
+                    ],
+                    xAxis: [
+                        {
+                            type: 'category',
+                            axisTick: {
+                                show: false
+                            },
+                            data: ['文学', '流行', '文化', '生活', '经管', '科技']
+                        }
+                    ],
+                    series: [
+                        {
+                            color: [
+                                "#3fb1e3",
+                                "#6be6c1",
+                                "#626c91",
+                                "#a0a7e6",
+                                "#c4ebad",
+                                "#96dee8"
+                            ],
+                            name: '出版数量',
+                            type: 'bar',
+                            stack: 'Total',
+                            label: {
+                                show: true
+                            },
+                            emphasis: {
+                                focus: 'series'
+                            },
+                            data: this.data.public
+                        },
+                        {
+                            color: [
+                                "#6be6c1",
+                                "#626c91",
+                                "#a0a7e6",
+                                "#c4ebad",
+                                "#96dee8"
+                            ],
+                            name: '综合评分',
+                            type: 'line',
+                            stack: 'Total',
+                            data: this.data.score
+                        },
+                        {
+                            color: [
+                                "#626c91",
+                                "#a0a7e6",
+                                "#c4ebad",
+                                "#96dee8"
+                            ],
+                            name: '评论人数',
+                            type: 'bar',
+                            stack: 'Total',
+                            label: {
+                                show: true,
+
+                            },
+                            emphasis: {
+                                focus: 'series'
+                            },
+                            data: this.data.comment
+                        }
+                    ]
+                };
+                echartsInstance.setOption(option);
+            },
+            methods: {
+
+            }
+
+        });
+        var chart_rank = new Vue({
+            el: '#bottom-left',
+            data() {
+                return {
+                    chartData: {
+                        "categories": [
+                            "飘",
+                            "小王子",
+                            "哈利·波特与魔法石",
+                            "摄影学",
+                            "动物庄园",
+                            "阿兹卡班的囚徒",
+                            "哈利·波特与密室",
+                            "圣传",
+                            "骆驼祥子",
+                            "月亮忘記了"
+                        ],
+                        "data": [
+                            86,
+                            84,
+                            82,
+                            82,
+                            82,
+                            80,
+                            80,
+                            74,
+                            72,
+                            72
+                        ]
+                    },
+                    selectedTag: 2000,
+                }
+            },
+            mounted() {
+                const chart = echarts.init(this.$refs.chart);
+                chart.setOption({
+                    title: {
+                        text: '年度排行榜',
+                        left: 'center',
+                        textStyle: {
+                            color: '#626c91'
+                        }
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+                    grid: {
+                        top: 10,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'value',
+                        splitLine: {
+                            show: false
+                        },
+                        axisLine: {
+                            show: false
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel: {
+                            show: false
+                        }
+                    },
+                    yAxis: {
+                        type: 'category',
+                        data: this.chartData.categories,
+                        axisLine: {
+                            show: false
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel: {
+                            color: '#333',
+                            fontSize: 16
+                        }
+                    },
+                    series: [{
+                        type: 'bar',
+                        barWidth: '50%',
+                        label: {
+                            show: true,
+                            position: 'insideRight',
+                            color: "#6e7074",
+                            fontSize: 16,
+                            bold: 10
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: function (params) {
+                                    var colorList = [
+                                        "#3fb1e3",
+                                        "#6be6c1",
+                                        "#a0a7e6",
+                                        "#c4ebad",
+                                        "#96dee8",
+                                        "#3fb1e3",
+                                        "#6be6c1",
+                                        "#a0a7e6",
+                                        "#c4ebad",
+                                        "#96dee8"
+                                    ];
+                                    return colorList[params.dataIndex]
+                                }
+                            }
+                        },
+                        data: this.chartData.data.sort((a, b) => a - b)
+                    }]
+                });
+                EventBus.$on("yearChanged", (msg) => {
+                    this.selectedTag = msg;
+                    var newData = []
+                    var newbooks = []
+
+                    function remapValue(value, min, max, newMin, newMax) {
+                        const position = (value - min) / (max - min);
+                        const newValue = position * (newMax - newMin) + newMin;
+                        return Number(newValue.toFixed(2));
+                    }
+
+                    fetch('rank.json')
+                        .then(response => response.json())
+                        .then(data => {
+                            newData.push(...data[this.selectedTag - 2000].data);
+                            newbooks.push(...data[this.selectedTag - 2000].categories);
+
+                            newData = newData.map(value => remapValue(value, 8, 10, 60, 100));
+
+                            const chart = echarts.init(this.$refs.chart)
+                            chart.setOption({
+                                yAxis: {
+                                    data: newbooks
+                                },
+                                series: [{
+                                    data: newData.sort((a, b) => a - b),
+                                }]
+                            })
+                        })
+                        .catch(error => console.error(error))
+                });
+            },
+            methods: {
+
+            }
+        });
+        var chart_wordCloud = new Vue({
+            el: '#top-left',
+            data() {
+                return {
+                }
+            },
+            mounted() {
+                EventBus.$on("yearChanged", (msg) => {
+                    this.getWordCloud(msg);
+                });
+                const color = [
+                    "#3fb1e3",
+                    "#6be6c1",
+                    "#626c91",
+                    "#a0a7e6",
+                    "#c4ebad",
+                    "#96dee8"
+                ];
+                const chart = this.$refs.chart;
+                var myChart = echarts.init(chart);
+                fetch('word.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        var option = {
+                            title: {
+                                text: '年度词云',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#626c91'
+                                }
+                            },
+                            series: [{
+                                type: 'wordCloud',
+                                gridSize: 40,
+                                sizeRange: [30, 60],
+                                rotationRange: [0, 0],
+                                shape: 'pentagon',
+                                width: '100%',
+                                height: '100%',
+                                textStyle: {
+                                    normal: {
+                                        fontFamily: 'sans-serif',
+                                    },
+                                    color: v => (
+                                        `${color[v.dataIndex]}`
+                                    ),
+                                    emphasis: {
+                                        shadowBlur: 10,
+                                        shadowColor: '#333'
+                                    }
+                                },
+                                data: data.slice(0, 10)
+                            }]
+                        };
+                        myChart.setOption(option);
+                    })
+                    .catch(error => console.error(error))
+            },
+
+            methods: {
+                getWordCloud(selected_year) {
+                    const chart = this.$refs.chart;
+                    var myChart = echarts.init(chart);
+                    const color = [
+                        "#3fb1e3",
+                        "#6be6c1",
+                        "#626c91",
+                        "#a0a7e6",
+                        "#c4ebad",
+                        "#96dee8"
+                    ];
+                    fetch('word.json')
+                        .then(response => response.json())
+                        .then(data => {
+                            var option = {
+                                title: {
+                                    text: '年度词云',
+                                    left: 'center'
+                                },
+                                series: [{
+                                    type: 'wordCloud',
+                                    gridSize: 40,
+                                    sizeRange: [30, 60],
+                                    rotationRange: [0, 0],
+                                    shape: 'pentagon',
+                                    width: '100%',
+                                    height: '100%',
+                                    textStyle: {
+                                        normal: {
+                                            fontFamily: 'sans-serif',
+                                        },
+                                        color: v => (
+                                            `${color[v.dataIndex]}`
+                                        ),
+                                        emphasis: {
+                                            shadowBlur: 10,
+                                            shadowColor: '#333'
+                                        }
+                                    },
+                                    data: data.slice((selected_year - 2000) * 10, (selected_year - 2000) * 10 + 10)
+                                }]
+                            };
+
+                            console.log((selected_year - 2000) * 10, (selected_year - 2000) * 10 + 10);
+                            console.log(data.slice((selected_year - 2000) * 10, (selected_year - 2000) * 10 + 10));
+                            myChart.setOption(option);
+                        })
+                        .catch(error => console.error(error))
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
